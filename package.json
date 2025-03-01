@@ -1,5 +1,5 @@
 {
-  "name": "finances2",
+  "name": "businessmaster",
   "module": "type",
   "version": "0.1.0",
   "private": true,
@@ -12,8 +12,12 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
     "@vercel/postgres": "^0.10.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "jsonwebtoken": "^9.0.2",
     "neon-js": "^1.1.2",
-    "next": "^15.1.7",
+    "next": "^15.2.0",
+    "pg": "^8.13.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
