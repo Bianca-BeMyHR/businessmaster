@@ -58,11 +58,11 @@ const handlePasswordReset = async () => {
           Login
 </button>
 </form>
-<button
+         {*/ <button
 className="mt-4 text-blue-600 hover:underline"
 onClick={handlePasswordReset}>
     Forgot Password?
-</button>
+</button> */}
 </div>
   );
 }
