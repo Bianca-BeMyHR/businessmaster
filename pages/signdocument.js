@@ -4,14 +4,14 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
- 
+
 export default function SignDocument() {
-    const sigCanvas = useRef({});
+    const sigCanvas = useRef(null);
     const router = useRouter();
     const [isSigned, setIsSigned] = useState(false);
     const [buttonsDisabled, setButtonsDisabled] = useState(false);
     const [uploadMessage, setUploadMessage] = useState("");
- 
+
     const documentText = `
 Project-Based Consulting Agreement
 
@@ -30,7 +30,7 @@ At this time, the Consultant is available to work up to 2 hours per week on the 
 
 After discussing the project details, the Consultant will provide an estimated number of hours required for completion.
 The Client will review and confirm the estimated hours before work begins.
-Once agreed, the Client must log in to the Business Master Consulting website Https://businessmaster.ca to sign this contract and proceed with payment.
+Once agreed, the Client must log in to the Business Master Consulting website https://businessmaster.ca to sign this contract and proceed with payment.
 
 4. Payment Terms
 
@@ -45,7 +45,6 @@ Work will begin only after the contract is signed via the Consultant’s website
 6. Next Steps & Initial Project Timeline
 
 Project 1:
-
 Duration: 2 hours within 1 week, from March 10th to March 14th.
 
 Amor to provide website credentials.
@@ -70,184 +69,124 @@ A digital signature pad will be provided below for authorized representatives to
 
 Client Name: ISupport Commission Services Corp.
 
-
 Business Master Consulting
 Authorized Representative: Bianca Marinho
 Signature: BMarinho
 Date: March 4th, 2025
-    `;
- 
-   // Generate and Upload PDF
-const generatePDF = async () => {
-    setButtonsDisabled(true); // Disable "Sign & Save" button
+`;
 
-    const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4" // Ensures consistent PDF scaling
-    });
+    // Generate and Upload PDF
+    const generatePDF = async () => {
+        setButtonsDisabled(true); // Disable "Sign & Save" button
 
-    const element = document.getElementById("document-content");
+        const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4" // Ensures consistent PDF scaling
+        });
 
-    // Capture document content as an image with proper scaling
-    const canvas = await html2canvas(element, {
-        scale: 2, // Ensures high quality for full contract
-        useCORS: true // Fixes potential cross-origin issues
-    });
+        const element = document.getElementById("document-content");
 
-    const imgData = canvas.toDataURL("image/png");
+        // Capture document content as an image with proper scaling
+        const canvas = await html2canvas(element, {
+            scale: 2, // Ensures high quality for full contract
+            useCORS: true // Fixes potential cross-origin issues
+        });
 
-    // Scale image to fit full A4 page
-    const imgWidth = 210; // A4 width in mm
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
+        const imgData = canvas.toDataURL("image/png");
 
-    doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        // Scale image to fit full A4 page
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
 
-    // Capture and correctly position the signature
-    const signatureData = sigCanvas.current.toDataURL("image/png");
+        doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-    if (signatureData) {
-        doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30); // Position at bottom
-    } else {
-        doc.text("No signature found", 10, imgHeight - 10);
-    }
-
-    // Convert to Blob & Upload
-    const pdfBlob = doc.output("blob");
-    await uploadToSupabase(pdfBlob);
-};
-
-// Download the Signed Document Locally
-const downloadDocument = async () => {
-    const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4"
-    });
-
-    const element = document.getElementById("document-content");
-
-    // Capture the document as an image
-    const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const imgWidth = 210;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-    // Capture the signature
-    if (sigCanvas.current) {
+        // Capture and correctly position the signature
         const signatureData = sigCanvas.current.toDataURL("image/png");
-        doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30);
-    } else {
-        console.error("Signature pad is empty.");
-    }
 
-    doc.save("signed-document.pdf");
-};
- 
+        if (signatureData) {
+            doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30); // Position at bottom
+        } else {
+            doc.text("No signature found", 10, imgHeight - 10);
+        }
+
+        // Convert to Blob & Upload
+        const pdfBlob = doc.output("blob");
+        await uploadToSupabase(pdfBlob);
+    };
+
+    // Download the Signed Document Locally
+    const downloadDocument = async () => {
+        const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4"
+        });
+
+        const element = document.getElementById("document-content");
+
+        // Capture the document as an image
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+        // Capture the signature
+        if (sigCanvas.current) {
+            const signatureData = sigCanvas.current.toDataURL("image/png");
+            doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30);
+        } else {
+            console.error("Signature pad is empty.");
+        }
+
+        doc.save("signed-document.pdf");
+    };
+
     return (
-<div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-<h2 className="text-xl font-bold mb-4">Review & Sign Document</h2>
- 
+        <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+            <h2 className="text-xl font-bold mb-4">Review & Sign Document</h2>
+
             {/* Display Document */}
-<div id="document-content" className="max-w-6xl mx-auto p-6 w-full">
-<p className="text-gray-700 whitespace-pre-line">{documentText}</p>
-</div>
- 
+            <div id="document-content" className="max-w-6xl mx-auto p-6 w-full">
+                <p className="text-gray-700 whitespace-pre-line">{documentText}</p>
+            </div>
+
             {/* Signature Pad */}
-<SignatureCanvas ref={sigCanvas} penColor="black"
+            <SignatureCanvas ref={sigCanvas} penColor="black"
                 canvasProps={{ width: 400, height: 150, className: "border border-gray-500 mt-4" }} />
- 
+
             {/* Buttons Before Signing */}
             {!isSigned && (
-<div className="mt-4">
-<button 
-                        className={`bg-green-600 text-white p-2 rounded mr-2 ${buttonsDisabled ? "opacity-50 cursor-not-allowed" : ""}`} 
-                        onClick={generatePDF}
-                        disabled={buttonsDisabled}
->
+                <div className="mt-4">
+                    <button className="bg-green-600 text-white p-2 rounded mr-2" onClick={generatePDF} disabled={buttonsDisabled}>
                         Sign & Save
-</button>
-<button 
-                        className={`bg-red-600 text-white p-2 rounded ${buttonsDisabled ? "opacity-50 cursor-not-allowed" : ""}`} 
-                        onClick={() => sigCanvas.current.clear()}
-                        disabled={buttonsDisabled}
->
+                    </button>
+                    <button className="bg-red-600 text-white p-2 rounded" onClick={() => sigCanvas.current.clear()} disabled={buttonsDisabled}>
                         Clear Signature
-</button>
-</div>
+                    </button>
+                </div>
             )}
- 
+
             {/* Buttons After Signing */}
             {isSigned && (
-<div className="mt-4 flex space-x-4">
-<button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
+                <div className="mt-4 flex space-x-4">
+                    <button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
                         Download Signed Document
-</button>
-<button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
+                    </button>
+                    <button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
                         Next to Payment
-</button>
-</div>
+                    </button>
+                </div>
             )}
- 
+
             {/* Upload Status */}
             {uploadMessage && <p className="mt-2 text-blue-600">{uploadMessage}</p>}
-</div>
+        </div>
     );
 }
-
- 
-    return (
-<div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-<h2 className="text-xl font-bold mb-4">Review & Sign Document</h2>
- 
-            {/* Display Document */}
-<div id="document-content" className="max-w-6xl mx-auto p-6 w-full">
-<p className="text-gray-700 whitespace-pre-line">{documentText}</p>
-</div>
- 
-            {/* Signature Pad */}
-<SignatureCanvas ref={sigCanvas} penColor="black"
-                canvasProps={{ width: 400, height: 150, className: "border border-gray-500 mt-4" }} />
- 
-            {/* Buttons Before Signing */}
-            {!isSigned && (
-<div className="mt-4">
-<button 
-                        className={`bg-green-600 text-white p-2 rounded mr-2 ${buttonsDisabled ? "opacity-50 cursor-not-allowed" : ""}`} 
-                        onClick={generatePDF}
-                        disabled={buttonsDisabled}
->
-                        Sign & Save
-</button>
-<button 
-                        className={`bg-red-600 text-white p-2 rounded ${buttonsDisabled ? "opacity-50 cursor-not-allowed" : ""}`} 
-                        onClick={() => sigCanvas.current.clear()}
-                        disabled={buttonsDisabled}
->
-                        Clear Signature
-</button>
-</div>
-            )}
- 
-            {/* Buttons After Signing */}
-            {isSigned && (
-<div className="mt-4 flex space-x-4">
-<button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
-                        Download Signed Document
-</button>
-<button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
-                        Next to Payment
-</button>
-</div>
-            )}
- 
-            {/* Upload Status */}
-            {uploadMessage && <p className="mt-2 text-blue-600">{uploadMessage}</p>}
-</div>
-    );
