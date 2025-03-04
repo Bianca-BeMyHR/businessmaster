@@ -15,7 +15,7 @@ export default function SignUp() {
     setMessage(null);
 
    if(password.length <6) {
-    set error ("Password must be at least 6 characters long.");
+    setError ("Password must be at least 6 characters long.");
     return;
    }
    
