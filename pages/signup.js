@@ -54,7 +54,7 @@ export default function SignUp() {
            
 <input type="checkbox" id="terms" required />
 <label for="terms">
-  I agree to the <a href="/terms" target="_blank">Terms and Conditions</a>
+  I agree to the <a href="/terms" target="_blank" className="text-blue-600 underline">Terms and Conditions</a>
 </label>
 
          
