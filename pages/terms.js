@@ -16,13 +16,13 @@ Const Terms = () => {
         <li>You may not use the platform for any illegal or unauthorized purpose.</li>
       </ul>
 
-      <h2 className="text-xl font-semibold mt-4">3. Payments & Billing</h2>
+      <h2 className="text-xl font-semibold mt-4">3. Payments</h2>
       <p>All payments are processed securely through Helcim. Business Master Consulting does not store or process credit card information.</p>
 
-      <h2 className="text-xl font-semibold mt-4">4. Refunds & Cancellations</h2>
+      <h2 className="text-xl font-semibold mt-4">4.Cancellations</h2>
       <p>Payments for completed services are non-refundable. Subscription-based services may be canceled as per the cancellation policy stated on our website.</p>
 
-      <h2 className="text-xl font-semibold mt-4">5. Data Privacy & Security</h2>
+      <h2 className="text-xl font-semibold mt-4">5. Data Privacy</h2>
       <p>We take reasonable security measures to protect user data.</p>
 
       <h2 className="text-xl font-semibold mt-4">6. Limitation of Liability</h2>
