@@ -1,4 +1,6 @@
-export default function Terms() {
+import React from 'react';
+
+Const Terms = () => {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
@@ -37,4 +39,6 @@ export default function Terms() {
       <p className="mt-4"><strong>Business Master Consulting</strong></p>
     </div>
   );
-}
+};
+
+export default Terms
