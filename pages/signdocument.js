@@ -107,20 +107,9 @@ Date: March 4th, 2025
         setIsSigned(true); // ✅ Agora exibe os botões "Download" e "Next to Payment"
     };
 
-    // ✅ Faz upload do PDF no Supabase
-    const uploadToSupabase = async (pdfBlob) => {
-        const fileName = `signed-documents/user-12345-${Date.now()}.pdf`;
-        const { error } = await supabase.storage
-            .from("signed-documents")
-            .upload(fileName, pdfBlob, { contentType: "application/pdf" });
-
-        if (error) {
-            console.error("Upload error:", error);
-            setUploadMessage("Failed to upload signed document.");
-            setButtonsDisabled(false);
-        } else {
-            setUploadMessage("Signed document uploaded successfully!");
-        }
+    // ✅ Baixa o documento assinado localmente
+    const downloadDocument = async () => {
+        generatePDF();
     };
 
     return (
@@ -153,7 +142,7 @@ Date: March 4th, 2025
             {/* Botões após assinar */}
             {isSigned && (
                 <div className="mt-4 flex space-x-4">
-                    <button className="bg-blue-600 text-white p-2 rounded">
+                    <button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
                         Download Signed Document
                     </button>
                     <button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
