@@ -50,6 +50,14 @@ export default function SignUp() {
           className="w-full p-3 border rounded-md mb-4"
           required
         />
+           
+           
+<input type="checkbox" id="terms" required />
+<label for="terms">
+  I agree to the <a href="/terms" target="_blank">Terms and Conditions</a>
+</label>
+
+         
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {message && <p className="text-green-500 mb-4">{message}</p>}
 <button className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md" type="submit">
