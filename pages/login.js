@@ -24,7 +24,7 @@ const handlePasswordReset = async () => {
         setError('Please enter your email first.');
         return;
     }
-    const { error } = await supabase.auth.resetPasswordForEmail (email, { redirectTo: `${window.location.origin}/reset-password`,
+    const { error } = await supabase.auth.resetPasswordForEmail (email, { redirectTo: `https://businessmaster.ca/resetpassword`,
     });
     if (error) {
         setError(error.message);
