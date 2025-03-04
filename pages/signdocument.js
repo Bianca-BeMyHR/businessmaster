@@ -13,13 +13,66 @@ export default function SignDocument() {
     const [uploadMessage, setUploadMessage] = useState("");
  
     const documentText = `
-        Agreement Between Client and Company
-        --------------------------------------
-        Client Name: John Doe
-        Date: March 3, 2024
- 
-        This agreement states that the client agrees to the terms and conditions...
-        By signing below, the client confirms agreement.
+Project-Based Consulting Agreement
+
+Purpose of This ContractThis agreement outlines the terms of engagement between Business Master Consulting ("Consultant") and ISupport Commission Services Corp. ("Client"). The purpose of this contract is to define the scope, timeline, and payment terms for the consulting and development services provided by the Consultant on a project basis. This ensures clear communication, agreed-upon deliverables, and a structured approach to completing the Client’s requested work.
+
+1. Scope of Work
+
+The Consultant will provide development services on a project basis. The complexity of each deliverable will determine the number of hours required for completion.
+
+2. Time Commitment
+
+At this time, the Consultant is available to work up to 2 hours per week on the Client's project. After mid-April, additional availability can be discussed if the Client requires faster delivery.
+
+3. Project Estimation & Agreement
+
+After discussing the project details, the Consultant will provide an estimated number of hours required for completion.
+The Client will review and confirm the estimated hours before work begins.
+Once agreed, the Client must log in to the Business Master Consulting website Https://businessmaster.ca to sign this contract and proceed with payment.
+
+4. Payment Terms
+
+For this project, the payment will be made after delivery.
+The Consultant’s usual hourly rate is $300, but for the Clients with referrals from YWCA, the agreed rate is $200 per hour.
+Typically, projects require 30% upfront payment, which may apply in future engagements.
+
+5. Contract Execution & Development Start
+
+Work will begin only after the contract is signed via the Consultant’s website.
+
+6. Next Steps & Initial Project Timeline
+
+Project 1:
+
+Duration: 2 hours within 1 week, from March 10th to March 17th.
+
+Amor to provide website credentials.
+Bianca to verify details about domain/hosting, including database and storage availability.
+Amor to share the services to be displayed after login.
+Amor to provide branding details (colors, fonts) for consistency across all pages.
+Communication will be via email, with a follow-up meeting on March 7th (afternoon) for approval.
+
+7. Deliverables
+
+Add a Login button on the website or repurpose the existing APPLY NOW button.
+Create a Login page connected to a free database with signup, login, and forgot password functionality.
+Collect emails for future marketing purposes (potentially flagged for services/partnerships, but not included in this project).
+Redirect login users to a services page displaying the offered services.
+
+By signing below, both parties acknowledge and agree to the terms outlined in this agreement.
+
+8. Signature Pad
+
+A digital signature pad will be provided below for authorized representatives to sign electronically.
+
+Client Name: ISupport Commission Services Corp.
+
+
+Business Master Consulting
+Authorized Representative: Bianca Marinho
+Signature: BMarinho
+Date: March 4th, 2025
     `;
  
     // Generate and Upload PDF
