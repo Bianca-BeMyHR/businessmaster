@@ -124,8 +124,17 @@ Date: March 4th, 2025
         const canvas = await html2canvas(element);
         const imgData = canvas.toDataURL("image/png");
         doc.addImage(imgData, "PNG", 10, 10, 180, 0);
-        doc.save("signed-document.pdf");
-    };
+     
+    // Capture the signature
+    if (sigCanvas.current) {
+        const signatureData = sigCanvas.current.toDataURL("image/png");
+        doc.addImage(signatureData, "PNG", 10, 250, 100, 30); // Adjust positioning
+    } else {
+        console.error("Signature pad is empty.");
+    }
+
+    doc.save("signed-document.pdf");
+};
  
     return (
 <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
