@@ -15,7 +15,8 @@ export default function SignDocument() {
     const documentText = `
 Project-Based Consulting Agreement
 
-Purpose of This ContractThis agreement outlines the terms of engagement between Business Master Consulting ("Consultant") and ISupport Commission Services Corp. ("Client"). The purpose of this contract is to define the scope, timeline, and payment terms for the consulting and development services provided by the Consultant on a project basis. This ensures clear communication, agreed-upon deliverables, and a structured approach to completing the Client’s requested work.
+Purpose of This Contract
+This agreement outlines the terms of engagement between Business Master Consulting ("Consultant") and ISupport Commission Services Corp. ("Client"). The purpose of this contract is to define the scope, timeline, and payment terms for the consulting and development services provided by the Consultant on a project basis. This ensures clear communication, agreed-upon deliverables, and a structured approach to completing the Client’s requested work.
 
 1. Scope of Work
 
@@ -131,7 +132,7 @@ Date: March 4th, 2025
 <h2 className="text-xl font-bold mb-4">Review & Sign Document</h2>
  
             {/* Display Document */}
-<div id="document-content" className="w-full max-w-lg p-4 border rounded-md bg-white shadow-md">
+<div id="document-content" className="max-w-6xl mx-auto p-6 w-full">
 <p className="text-gray-700 whitespace-pre-line">{documentText}</p>
 </div>
  
