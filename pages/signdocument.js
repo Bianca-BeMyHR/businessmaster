@@ -75,48 +75,10 @@ Signature: BMarinho
 Date: March 4th, 2025
 `;
 
-    // Generate and Upload PDF
+    // ✅ Gera e faz upload do PDF com a assinatura
     const generatePDF = async () => {
-        setButtonsDisabled(true); // Disable "Sign & Save" button
+        setButtonsDisabled(true); // Desabilita os botões "Sign & Save" e "Clear Signature"
 
-        const doc = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4" // Ensures consistent PDF scaling
-        });
-
-        const element = document.getElementById("document-content");
-
-        // Capture document content as an image with proper scaling
-        const canvas = await html2canvas(element, {
-            scale: 2, // Ensures high quality for full contract
-            useCORS: true // Fixes potential cross-origin issues
-        });
-
-        const imgData = canvas.toDataURL("image/png");
-
-        // Scale image to fit full A4 page
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
-
-        doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-        // Capture and correctly position the signature
-        const signatureData = sigCanvas.current.toDataURL("image/png");
-
-        if (signatureData) {
-            doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30); // Position at bottom
-        } else {
-            doc.text("No signature found", 10, imgHeight - 10);
-        }
-
-        // Convert to Blob & Upload
-        const pdfBlob = doc.output("blob");
-        await uploadToSupabase(pdfBlob);
-    };
-
-    // Download the Signed Document Locally
-    const downloadDocument = async () => {
         const doc = new jsPDF({
             orientation: "portrait",
             unit: "mm",
@@ -125,58 +87,73 @@ Date: March 4th, 2025
 
         const element = document.getElementById("document-content");
 
-        // Capture the document as an image
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true
-        });
-
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true });
         const imgData = canvas.toDataURL("image/png");
+
         const imgWidth = 210;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
         doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-        // Capture the signature
-        if (sigCanvas.current) {
-            const signatureData = sigCanvas.current.toDataURL("image/png");
+        // Captura e adiciona a assinatura
+        const signatureData = sigCanvas.current.toDataURL("image/png");
+        if (signatureData) {
             doc.addImage(signatureData, "PNG", 50, imgHeight - 30, 100, 30);
-        } else {
-            console.error("Signature pad is empty.");
         }
 
-        doc.save("signed-document.pdf");
+        const pdfBlob = doc.output("blob");
+        await uploadToSupabase(pdfBlob);
+
+        setIsSigned(true); // ✅ Agora exibe os botões "Download" e "Next to Payment"
+    };
+
+    // ✅ Faz upload do PDF no Supabase
+    const uploadToSupabase = async (pdfBlob) => {
+        const fileName = `signed-documents/user-12345-${Date.now()}.pdf`;
+        const { error } = await supabase.storage
+            .from("signed-documents")
+            .upload(fileName, pdfBlob, { contentType: "application/pdf" });
+
+        if (error) {
+            console.error("Upload error:", error);
+            setUploadMessage("Failed to upload signed document.");
+            setButtonsDisabled(false);
+        } else {
+            setUploadMessage("Signed document uploaded successfully!");
+        }
     };
 
     return (
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
             <h2 className="text-xl font-bold mb-4">Review & Sign Document</h2>
 
-            {/* Display Document */}
+            {/* Exibir contrato */}
             <div id="document-content" className="max-w-6xl mx-auto p-6 w-full">
                 <p className="text-gray-700 whitespace-pre-line">{documentText}</p>
             </div>
 
-            {/* Signature Pad */}
+            {/* Área de Assinatura */}
             <SignatureCanvas ref={sigCanvas} penColor="black"
                 canvasProps={{ width: 400, height: 150, className: "border border-gray-500 mt-4" }} />
 
-            {/* Buttons Before Signing */}
+            {/* Botões antes da assinatura */}
             {!isSigned && (
                 <div className="mt-4">
-                    <button className="bg-green-600 text-white p-2 rounded mr-2" onClick={generatePDF} disabled={buttonsDisabled}>
+                    <button className="bg-green-600 text-white p-2 rounded mr-2"
+                        onClick={generatePDF} disabled={buttonsDisabled}>
                         Sign & Save
                     </button>
-                    <button className="bg-red-600 text-white p-2 rounded" onClick={() => sigCanvas.current.clear()} disabled={buttonsDisabled}>
+                    <button className="bg-red-600 text-white p-2 rounded"
+                        onClick={() => sigCanvas.current.clear()} disabled={buttonsDisabled}>
                         Clear Signature
                     </button>
                 </div>
             )}
 
-            {/* Buttons After Signing */}
+            {/* Botões após assinar */}
             {isSigned && (
                 <div className="mt-4 flex space-x-4">
-                    <button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
+                    <button className="bg-blue-600 text-white p-2 rounded">
                         Download Signed Document
                     </button>
                     <button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
@@ -185,7 +162,6 @@ Date: March 4th, 2025
                 </div>
             )}
 
-            {/* Upload Status */}
             {uploadMessage && <p className="mt-2 text-blue-600">{uploadMessage}</p>}
         </div>
     );
