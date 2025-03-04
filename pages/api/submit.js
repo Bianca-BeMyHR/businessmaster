@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { section, ...data } = req.body;
-    const { error } = await supabase.from('FinancialData').insert([{ section, ...data }]);
+    const { error } = await supabase.from('Businessmaster').insert([{ section, ...data }]);
     if (error) {
       return res.status(500).json({ error: error.message });
     }
