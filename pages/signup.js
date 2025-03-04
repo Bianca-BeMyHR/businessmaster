@@ -13,14 +13,20 @@ export default function SignUp() {
     e.preventDefault();
     setError(null);
     setMessage(null);
+
+   if(password.length <6) {
+    set error ("Password must be at least 6 characters long.");
+    return;
+   }
+   
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
       setError(error.message);
     } else {
-      setMessage("Check your email to confirm your account!");
+      setMessage("Sign up successful! Redirecting to login...");
       setTimeout(() => {
         router.push('/login');
-      },5000);  //Redirects after 5 seconds
+      },3000);  //Redirects after 3 seconds
     }
   };
  
