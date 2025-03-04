@@ -21,7 +21,7 @@ export default function Login() {
  
 const handlePasswordReset = async () => {
     if (!email) {
-        setError('Pleae enter your email first.');
+        setError('Please enter your email first.');
         return;
     }
     const { error } = await supabase.auth.resetPasswordForEmail (email, { redirectTo: `${window.location.origin}/reset-password`,
