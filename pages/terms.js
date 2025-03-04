@@ -5,7 +5,7 @@ export default function Terms() {
       <p><strong>Effective Date:</strong> March 3, 2025</p>
       
       <h2 className="text-xl font-semibold mt-4">1. Services Provided</h2>
-      <p>Business Master Consulting provides software solutions on a Software-as-a-Service (SaaS) basis, including authentication systems, database integration, and business tools.</p>
+      <p>Business Master Consulting provides software solutions.</p>
 
       <h2 className="text-xl font-semibold mt-4">2. Account Registration & Use</h2>
       <ul className="list-disc ml-6">
