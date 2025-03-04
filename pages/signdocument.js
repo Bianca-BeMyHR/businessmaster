@@ -56,7 +56,7 @@ If material requested from client is not delivered by March 10th, the project de
  
 7. Deliverables
  
-Add a Login button on the website or repurpose the existing APPLY NOW button.
+Add a Login button on the website.
 Create a Login page connected to a free database with signup, login, and forgot password functionality.
 Collect emails for future marketing purposes (potentially flagged for services/partnerships, but not included in this project).
 Redirect login users to a services page displaying the offered services.
