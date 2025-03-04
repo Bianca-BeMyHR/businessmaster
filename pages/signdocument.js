@@ -202,7 +202,7 @@ Date: March 4th, 2025
             {isSigned && (
 <div className="mt-4 flex space-x-4">
 <button className="bg-blue-600 text-white p-2 rounded" onClick={downloadDocument}>
-                        Download Signed Document
+                        Download Signed Document (Computer only)
 </button>
 <button className="bg-green-600 text-white p-2 rounded" onClick={() => router.push("/payment")}>
                         Next to Payment
